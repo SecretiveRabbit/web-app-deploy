@@ -4,8 +4,16 @@ using System;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-var slot = Environment.GetEnvironmentVariable("WEBSITE_SLOT_NAME") ?? "Unknown";
+var slot = Environment.GetEnvironmentVariable("WEBSITE_SLOT_NAME");
+var hostname = Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME");
 
-app.MapGet("/", () => $"Hello from .NET 8 Web App! Slot: {slot}");
+slot ??= "production";
+
+app.MapGet("/", () => $@"
+Hello from .NET 8 Web App!
+
+Slot: {slot}
+Hostname: {hostname}
+");
 
 app.Run();
